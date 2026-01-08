@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export function FortuneCard() {
@@ -59,59 +58,80 @@ export function FortuneCard() {
             transition={{ duration: 0.6, ease: "easeInOut" }}
             className="w-full"
           >
-            <Card
-              className="cursor-pointer border-2 border-amber-500/50 bg-gradient-to-br from-amber-50 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 shadow-xl hover:shadow-2xl transition-shadow duration-300 min-h-[400px] flex flex-col items-center justify-center"
+            {/* Glassmorphism Card - Front */}
+            <motion.div
+              className="cursor-pointer backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl min-h-[420px] flex flex-col items-center justify-center p-8 relative overflow-hidden group"
               onClick={!isLoading ? getFortune : undefined}
+              whileHover={{ scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)" }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              <CardHeader className="text-center">
-                <motion.div
-                  animate={{
-                    scale: isLoading ? [1, 1.1, 1] : 1,
-                    rotate: isLoading ? [0, 5, -5, 0] : 0
-                  }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: isLoading ? Infinity : 0,
-                    ease: "easeInOut"
-                  }}
-                  className="text-6xl mb-4"
-                >
-                  {isLoading ? "🌟" : "🔮"}
-                </motion.div>
-                <CardTitle className="text-2xl text-amber-800 dark:text-amber-200">
-                  Колядочное гадание
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-amber-700 dark:text-amber-300 mb-6">
-                  {isLoading
-                    ? "Духи колядок готовят ваше предсказание..."
-                    : "Нажмите на карту, чтобы узнать свою судьбу"}
-                </p>
-                {error && (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-red-500 text-sm mt-2"
-                  >
-                    {error}
-                  </motion.p>
+              {/* Animated glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 via-purple-500/5 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl" />
+
+              {/* Inner border glow */}
+              <div className="absolute inset-[1px] rounded-3xl border border-white/10" />
+
+              {/* Crystal Ball Icon */}
+              <motion.div
+                animate={{
+                  scale: isLoading ? [1, 1.15, 1] : 1,
+                  rotate: isLoading ? [0, 5, -5, 0] : 0
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: isLoading ? Infinity : 0,
+                  ease: "easeInOut"
+                }}
+                className="text-7xl mb-6 relative z-10"
+              >
+                {isLoading ? (
+                  <span className="drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">🌟</span>
+                ) : (
+                  <span className="drop-shadow-[0_0_15px_rgba(147,51,234,0.4)]">🔮</span>
                 )}
-                <motion.div
-                  animate={{
-                    y: isLoading ? 0 : [0, -10, 0],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="text-amber-600 dark:text-amber-400 text-sm"
+              </motion.div>
+
+              <h2 className="text-2xl font-bold text-amber-200 mb-4 relative z-10 drop-shadow-lg">
+                Колядочное гадание
+              </h2>
+
+              <p className="text-purple-100/80 mb-6 text-center relative z-10">
+                {isLoading
+                  ? "Духи колядок готовят ваше предсказание..."
+                  : "Нажмите на карту, чтобы узнать свою судьбу"}
+              </p>
+
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-red-400 text-sm mt-2 relative z-10"
                 >
-                  {!isLoading && "✨ Нажмите на карту ✨"}
-                </motion.div>
-              </CardContent>
-            </Card>
+                  {error}
+                </motion.p>
+              )}
+
+              <motion.div
+                animate={{
+                  y: isLoading ? 0 : [0, -8, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="text-amber-300/90 text-sm relative z-10"
+              >
+                {!isLoading && "✨ Нажмите на карту ✨"}
+              </motion.div>
+
+              {/* Decorative corner elements */}
+              <div className="absolute top-4 left-4 text-amber-300/30 text-xl">✦</div>
+              <div className="absolute top-4 right-4 text-amber-300/30 text-xl">✦</div>
+              <div className="absolute bottom-4 left-4 text-amber-300/30 text-xl">✦</div>
+              <div className="absolute bottom-4 right-4 text-amber-300/30 text-xl">✦</div>
+            </motion.div>
           </motion.div>
         ) : (
           <motion.div
@@ -122,21 +142,29 @@ export function FortuneCard() {
             transition={{ duration: 0.6, ease: "easeInOut" }}
             className="w-full"
           >
-            <Card className="border-2 border-purple-500/50 bg-gradient-to-br from-purple-50 to-indigo-100 dark:from-purple-900/30 dark:to-indigo-900/30 shadow-xl min-h-[400px] flex flex-col">
-              <CardHeader className="text-center">
+            {/* Glassmorphism Card - Back (Fortune revealed) */}
+            <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl min-h-[420px] flex flex-col relative overflow-hidden">
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10 rounded-3xl" />
+
+              {/* Inner border glow */}
+              <div className="absolute inset-[1px] rounded-3xl border border-white/10" />
+
+              <div className="text-center p-8 relative z-10">
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1, rotate: [0, 360] }}
                   transition={{ delay: 0.3, duration: 0.5 }}
-                  className="text-5xl mb-2"
+                  className="text-6xl mb-4"
                 >
-                  ⭐
+                  <span className="drop-shadow-[0_0_20px_rgba(255,215,0,0.5)]">⭐</span>
                 </motion.div>
-                <CardTitle className="text-xl text-purple-800 dark:text-purple-200">
+                <h2 className="text-xl font-bold text-purple-200 drop-shadow-lg">
                   Ваше предсказание
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col items-center justify-center">
+                </h2>
+              </div>
+
+              <div className="flex-1 flex flex-col items-center justify-center p-8 relative z-10">
                 <AnimatePresence>
                   {isRevealed && (
                     <motion.div
@@ -145,21 +173,28 @@ export function FortuneCard() {
                       transition={{ delay: 0.2, duration: 0.5 }}
                       className="text-center"
                     >
-                      <p className="text-lg text-purple-900 dark:text-purple-100 leading-relaxed italic mb-6 px-4">
-                        "{fortune}"
-                      </p>
+                      <div className="backdrop-blur-sm bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
+                        <p className="text-lg text-purple-100 leading-relaxed italic">
+                          &ldquo;{fortune}&rdquo;
+                        </p>
+                      </div>
                       <Button
                         onClick={reset}
-                        variant="outline"
-                        className="border-purple-400 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/50"
+                        className="backdrop-blur-md bg-white/10 border border-white/20 text-amber-200 hover:bg-white/20 hover:text-amber-100 transition-all duration-300 rounded-xl px-6 py-3 shadow-lg"
                       >
                         🔮 Погадать снова
                       </Button>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </CardContent>
-            </Card>
+              </div>
+
+              {/* Decorative corner elements */}
+              <div className="absolute top-4 left-4 text-purple-300/30 text-xl">✧</div>
+              <div className="absolute top-4 right-4 text-purple-300/30 text-xl">✧</div>
+              <div className="absolute bottom-4 left-4 text-purple-300/30 text-xl">✧</div>
+              <div className="absolute bottom-4 right-4 text-purple-300/30 text-xl">✧</div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
