@@ -1,9 +1,7 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { Sparkles, Moon, Star, Eye } from "lucide-react";
+import { getFortune } from "../services/fortune";
 
 export function FortuneCard() {
   const [fortune, setFortune] = useState<string | null>(null);
@@ -52,7 +50,7 @@ export function FortuneCard() {
     }
   }, [isLoading, loadingProgress, apiComplete]);
 
-  const getFortune = async () => {
+  const handleGetFortune = async () => {
     const today = new Date().toDateString();
     
     try {
@@ -77,12 +75,7 @@ export function FortuneCard() {
       setLoadingProgress(0);
       setApiComplete(false);
 
-      const response = await fetch("/api/fortune", { method: "POST" });
-      if (!response.ok) {
-        throw new Error("Не удалось получить предсказание");
-      }
-      
-      const data = await response.json();
+      const data = await getFortune();
       setFortune(data.fortune);
       setApiComplete(true);
       
@@ -130,7 +123,7 @@ export function FortuneCard() {
           style={{ backfaceVisibility: "hidden" }}
         >
           <motion.button
-            onClick={!isLoading && !isLimitReached ? getFortune : undefined}
+            onClick={!isLoading && !isLimitReached ? handleGetFortune : undefined}
             disabled={isLoading || isLimitReached}
             className="w-full h-full bg-[var(--slate-900)] border-2 border-[var(--copper)] rounded-lg relative overflow-hidden group cursor-pointer disabled:cursor-default shadow-2xl"
             whileHover={!isLoading && !isLimitReached ? {
@@ -142,12 +135,10 @@ export function FortuneCard() {
           >
             {/* Card Back Design */}
             <div className={`absolute inset-0 ${isLimitReached ? 'opacity-40 grayscale' : ''}`}>
-              <Image
+              <img
                 src="/card-back.webp"
                 alt="Card back"
-                fill
-                className="object-cover rounded-lg"
-                priority
+                className="object-cover w-full h-full rounded-lg"
               />
             </div>
 

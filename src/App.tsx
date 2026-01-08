@@ -1,7 +1,7 @@
-import { FortuneCard } from "@/components/fortune-card";
+import { FortuneCard } from "./components/FortuneCard";
 import { Sparkles, Moon, Eye, Circle, Star, Zap } from "lucide-react";
 
-export default function Home() {
+function App() {
   return (
     <div className="min-h-screen bg-[var(--slate-950)] relative overflow-hidden">
       {/* Atmospheric background elements */}
@@ -64,23 +64,11 @@ export default function Home() {
         {/* Header - Editorial Style */}
         <header className="pt-16 pb-12 px-4 text-center animate-fade-in-up">
           <div className="max-w-2xl mx-auto">
-            {/* Overline */}
-            <div className="mb-6">
-              <span className="text-[var(--copper)] text-xs tracking-[0.3em] uppercase font-[family-name:var(--font-outfit)] font-medium">
-                Современное гадание
-              </span>
-            </div>
 
             {/* Main title */}
             <h1 className="font-[family-name:var(--font-cormorant)] text-6xl md:text-7xl lg:text-8xl font-light text-[var(--cream)] mb-6 leading-[0.95] tracking-tight">
               Узнай свою<br />судьбу
             </h1>
-
-            {/* Subtitle */}
-            <p className="text-[var(--cream-dark)] text-base md:text-lg max-w-md mx-auto leading-relaxed font-light">
-              Традиционные предсказания в современном формате.
-              Раскройте карту и получите послание.
-            </p>
           </div>
         </header>
 
@@ -99,3 +87,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default App;
