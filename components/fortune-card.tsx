@@ -1,10 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Sparkles, Moon, Star, Eye } from "lucide-react";
-import { getFortuneAction } from "@/app/actions";
 
 export function FortuneCard() {
   const [fortune, setFortune] = useState<string | null>(null);
@@ -25,7 +24,9 @@ export function FortuneCard() {
     if (storageData) {
       const { date, count } = JSON.parse(storageData);
       if (date === today && count >= DAILY_LIMIT) {
-        setIsLimitReached(true);
+        // Use setTimeout to avoid synchronous setState warning
+        const timer = setTimeout(() => setIsLimitReached(true), 0);
+        return () => clearTimeout(timer);
       }
     }
   }, []);
@@ -76,7 +77,12 @@ export function FortuneCard() {
       setLoadingProgress(0);
       setApiComplete(false);
 
-      const data = await getFortuneAction();
+      const response = await fetch("/api/fortune", { method: "POST" });
+      if (!response.ok) {
+        throw new Error("Не удалось получить предсказание");
+      }
+      
+      const data = await response.json();
       setFortune(data.fortune);
       setApiComplete(true);
       
